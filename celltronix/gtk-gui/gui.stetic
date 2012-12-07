@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+    <target-gtk-version>2.12</target-gtk-version>
+  </configuration>
+  <import>
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../bin/Debug/celltronix.exe" internal="true" />
+  </import>
+  <widget class="Gtk.Window" id="MainWindow" design-size="962 600">
+    <action-group name="Default">
+      <action id="executeAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">SP</property>
+        <property name="ShortLabel" translatable="yes">SP</property>
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="onSP" />
+      </action>
+      <action id="executeAction4">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">SN</property>
+        <property name="ShortLabel" translatable="yes">SN</property>
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="onSN" />
+      </action>
+      <action id="executeAction5">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Metal</property>
+        <property name="ShortLabel" translatable="yes">Metal</property>
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="onMetal" />
+      </action>
+      <action id="executeAction6">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Del S</property>
+        <property name="ShortLabel" translatable="yes">Del S</property>
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="onDelS" />
+      </action>
+      <action id="executeAction7">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Del M</property>
+        <property name="ShortLabel" translatable="yes">Del M</property>
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="onDelM" />
+      </action>
+      <action id="newAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-new</property>
+        <signal name="Activated" handler="onNew" />
+      </action>
+      <action id="openAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-open</property>
+      </action>
+      <action id="saveAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-save</property>
+      </action>
+      <action id="refreshAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Redraw</property>
+        <property name="ShortLabel" translatable="yes">Redraw</property>
+        <property name="StockId">gtk-refresh</property>
+        <signal name="Activated" handler="onRedraw" />
+      </action>
+      <action id="gotoBottomAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Input</property>
+        <property name="ShortLabel" translatable="yes">Input</property>
+        <property name="StockId">gtk-goto-bottom</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="onInput" />
+      </action>
+      <action id="gotoTopAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Output</property>
+        <property name="ShortLabel" translatable="yes">Output</property>
+        <property name="StockId">gtk-goto-top</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+      </action>
+      <action id="executeAction8">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">Via</property>
+        <property name="ShortLabel" translatable="yes">Via</property>
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="onVia" />
+      </action>
+      <action id="findAction">
+        <property name="Type">Radio</property>
+        <property name="Label" translatable="yes">LinkChk</property>
+        <property name="ShortLabel" translatable="yes">LinkChk</property>
+        <property name="StockId">gtk-find</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+        <property name="Value">0</property>
+        <property name="Group">group1</property>
+        <signal name="Activated" handler="onLinkChk" />
+      </action>
+      <action id="FileAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">File</property>
+        <property name="ShortLabel" translatable="yes">File</property>
+      </action>
+      <action id="executeAction9">
+        <property name="Type">Toggle</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">True</property>
+        <signal name="Activated" handler="showHideM" />
+      </action>
+      <action id="executeAction10">
+        <property name="Type">Toggle</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">True</property>
+        <signal name="Activated" handler="showHideS" />
+      </action>
+      <action id="executeAction11">
+        <property name="Type">Toggle</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-execute</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">True</property>
+        <signal name="Activated" handler="showHideM" />
+      </action>
+    </action-group>
+    <property name="MemberName" />
+    <property name="Events">ButtonPressMask</property>
+    <property name="Title" translatable="yes">Celltronix</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <signal name="DeleteEvent" handler="OnDeleteEvent" />
+    <signal name="SizeAllocated" handler="onSize" />
+    <child>
+      <widget class="Gtk.VBox" id="vbox1">
+        <property name="MemberName" />
+        <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.MenuBar" id="menubar1">
+            <property name="MemberName" />
+            <node name="menubar1" type="Menubar">
+              <node type="Menu" action="FileAction" />
+            </node>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox1">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Toolbar" id="toolbar1">
+                <property name="MemberName" />
+                <property name="Orientation">Vertical</property>
+                <property name="ShowArrow">False</property>
+                <node name="toolbar1" type="Toolbar">
+                  <node type="Toolitem" action="newAction" />
+                  <node type="Toolitem" action="openAction" />
+                  <node type="Toolitem" action="saveAction" />
+                  <node type="Toolitem" action="refreshAction" />
+                </node>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.DrawingArea" id="drawingarea1">
+                <property name="MemberName" />
+                <property name="Events">ExposureMask, PointerMotionMask, ButtonPressMask, ButtonReleaseMask</property>
+                <signal name="ExposeEvent" handler="onDAExposed" />
+                <signal name="ButtonPressEvent" handler="onDAButtonPress" />
+                <signal name="ButtonReleaseEvent" handler="onDAButtonRelease" />
+                <signal name="MotionNotifyEvent" handler="onDAMotionNotify" />
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.VBox" id="vbox2">
+                <property name="MemberName" />
+                <property name="Spacing">6</property>
+                <child>
+                  <widget class="Gtk.Toolbar" id="toolbar2">
+                    <property name="MemberName" />
+                    <property name="Orientation">Vertical</property>
+                    <property name="ShowArrow">False</property>
+                    <node name="toolbar2" type="Toolbar">
+                      <node type="Toolitem" action="executeAction4" />
+                      <node type="Toolitem" action="executeAction" />
+                      <node type="Toolitem" action="executeAction5" />
+                      <node type="Toolitem" action="executeAction8" />
+                      <node type="Toolitem" action="executeAction6" />
+                      <node type="Toolitem" action="executeAction7" />
+                      <node type="Toolitem" action="gotoBottomAction" />
+                      <node type="Toolitem" action="gotoTopAction" />
+                      <node type="Toolitem" action="findAction" />
+                    </node>
+                  </widget>
+                  <packing>
+                    <property name="Position">0</property>
+                    <property name="AutoSize">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.HButtonBox" id="hbuttonbox2">
+                    <property name="MemberName" />
+                    <property name="Size">0</property>
+                  </widget>
+                  <packing>
+                    <property name="Position">1</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.Toolbar" id="toolbar3">
+                    <property name="MemberName" />
+                    <property name="ShowArrow">False</property>
+                    <property name="ButtonStyle">Icons</property>
+                    <property name="IconSize">SmallToolbar</property>
+                    <node name="toolbar3" type="Toolbar">
+                      <node type="Toolitem" action="executeAction9" />
+                      <node type="Toolitem" action="executeAction10" />
+                    </node>
+                  </widget>
+                  <packing>
+                    <property name="Position">2</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Statusbar" id="statusbar1">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Label" id="lblCellCount">
+                <property name="MemberName" />
+                <signal name="ExposeEvent" handler="OnLblCellCountExposeEvent" />
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">2</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</stetic-interface>

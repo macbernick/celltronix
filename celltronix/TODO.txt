@@ -1,0 +1,10 @@
+
+// the todolist !
+	// TODO: légalité complète liens P/N N/P
+	// TODO: drag sur Del
+	// TODO: scrolling
+	// TODO: box selection
+	// TODO: input/output
+	// TODO: création projet
+	// TODO: sauvegarde / chargement
+	// TODO: simu
