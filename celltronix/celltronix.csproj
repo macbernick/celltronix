@@ -76,6 +76,10 @@
     <Compile Include="circuits\InOut.cs" />
     <Compile Include="drawings\Colors.cs" />
     <Compile Include="Vector2D.cs" />
+    <Compile Include="sim\sim.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="sim\" />
+  </ItemGroup>
 </Project>
