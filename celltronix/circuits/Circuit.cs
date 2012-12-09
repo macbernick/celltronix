@@ -10,6 +10,7 @@ namespace celltronix {
 
 
 		public List<Cell> cells;			// cellules du circuit
+		public List<InOut> ios;				// entrées / sorties
 
 		private Label cellCount;
 		private Cell firstLinkingCell;		// premiere cellule à lier à une deuxième
@@ -21,14 +22,17 @@ namespace celltronix {
 		public double cellNormalWidth = 20;// taille d'une cellule à zoom = 1
 
 		public enum showLayerType {
-			S, M
+			S,
+			M
 		}
 
 		public bool[] showLayer;
 
+
 		// Constructeur
 		public Circuit(DrawingArea drawingAera, Label cellCount) {
 			cells = new List<Cell>();
+			ios = new List<InOut>();
 			color = new Colors();
 			this.drawingAera = drawingAera;
 			this.cellCount = cellCount;
@@ -59,8 +63,6 @@ namespace celltronix {
 		public Cell clickCell(double x, double y, Cell.LayerType layerType) {
 			int coordX = (int)Math.Ceiling(x / cellNormalWidth) - 1;
 			int coordY = (int)Math.Ceiling(y / cellNormalWidth) - 1;
-
-			Console.Write("cellule x = " + coordX + " y = " + coordY + "\n");
 
 			Cell c = findCellByCoords(coordX, coordY);
 
@@ -146,7 +148,8 @@ namespace celltronix {
 			Cell c = findCellByCoords(coordX, coordY);
 			if (c != null)
 				c.drawLinkChk();
-			else Console.WriteLine("No Cell here!");
+			else
+				Console.WriteLine("No Cell here!");
 		}
 
 
@@ -168,8 +171,6 @@ namespace celltronix {
 		public void createIO(double x, double y) {
 			int coordX = (int)Math.Ceiling(x / cellNormalWidth) - 1;
 			int coordY = (int)Math.Ceiling(y / cellNormalWidth) - 1;
-
-			Console.WriteLine("ledusgo");
 
 			// verif place libre
 			bool place = true;
@@ -232,9 +233,15 @@ namespace celltronix {
 							break;
 					}
 				}
+
+				InOut io = new InOut();
+				ios.Add(io);
+				io.iocells = iocells;
+
 				draw();
 			}
 		}
+
 
 
 		public void layerVisible(showLayerType type, bool visible) {
@@ -247,7 +254,6 @@ namespace celltronix {
 		private Vector2D aeraSize() {
 			return new Vector2D(drawingAera.Allocation.Width, drawingAera.Allocation.Height);
 		}
-
 
 
 		// trace la grille de cellules
@@ -312,7 +318,6 @@ namespace celltronix {
 			updateStatusBarCellCount();
 			return c;
 		}
-
 
 
 		// mise a jour nombre de cellule dans la barre de status

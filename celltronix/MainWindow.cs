@@ -13,6 +13,7 @@ public partial class MainWindow: Gtk.Window {
 
 	private Label cellCount;
 	private Circuit circuit;
+	private Sim sim;
 	private DrawingArea circuitAera;
 	private enum ToolType {
 		SILICON_P,
@@ -43,7 +44,7 @@ public partial class MainWindow: Gtk.Window {
 
 
 	protected void onNew(object sender, EventArgs e) {
-		circuit = new Circuit(circuitAera, cellCount);
+		newCircuit();
 	}
 
 
@@ -201,13 +202,15 @@ public partial class MainWindow: Gtk.Window {
 				break;
 
 			case ToolType.IO:
-				Console.WriteLine("Yo !");
 				circuit.createIO(x, y);
 				break;
 		}
 	}
 
-
+	private void newCircuit() {
+		circuit = new Circuit(circuitAera, cellCount);
+		sim = new Sim(circuit);
+	}
 
 	protected void onLinkChk(object sender, EventArgs e) {
 		selectedTool = ToolType.LINK_CHK;
@@ -242,4 +245,7 @@ public partial class MainWindow: Gtk.Window {
 			circuit.layerVisible(Circuit.showLayerType.M, ((ToggleAction)sender).Active);
 	}
 
+	protected void OnSimStepActionActivated(object sender, EventArgs e) {
+		sim.tick();
+	}
 }

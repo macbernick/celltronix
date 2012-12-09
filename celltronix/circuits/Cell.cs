@@ -10,8 +10,7 @@ namespace celltronix {
 
 
 
-
-		public int x, y;
+		public int x, y;					// coordonnées grille de la cellule
 
 		// marges pour tracage cellules
 		double mgN = 3;
@@ -19,6 +18,7 @@ namespace celltronix {
 		double mgS = 2;
 		double mgW = 3;
 
+		// type de couches contenues dans la cellule
 		public enum LayerType {
 			SILICON_P,
 			SILICON_N,
@@ -484,6 +484,22 @@ namespace celltronix {
 			}
 
 
+			// powered
+			bool pwr = false;
+			foreach (CellLayer l in layers)
+				if (l.isPowered)
+					pwr = true;
+
+			if (pwr) {
+				grCxt.MoveTo(new PointD(x * cellWidth + mgW, y * cellWidth + mgN));
+				grCxt.LineTo(new PointD((x + 1) * cellWidth - mgE, y * cellWidth + mgN));
+				grCxt.LineTo(new PointD((x + 1) * cellWidth - mgE, (y + 1) * cellWidth - mgS));
+				grCxt.LineTo(new PointD(x * cellWidth + mgW, (y + 1) * cellWidth - mgS));
+				grCxt.ClosePath();
+				grCxt.Color = color.find("powered");
+				grCxt.Fill();
+			}
+
 		}
 
 
@@ -537,7 +553,12 @@ namespace celltronix {
 						grCxt.Fill();
 					}
 				}
-				Console.WriteLine("layer " + l.layerType + " : " + l.isSet);
+
+				int lnkCnt = 0;
+				foreach(Cell c in l.links)
+					if (c != null) lnkCnt ++;
+
+				Console.WriteLine("layer " + l.layerType + " : " + l.isSet + " | pwr : " + l.isPowered + " | links : " + lnkCnt);
 			}
 			Console.WriteLine("::::::::::::::::::::::");
 
@@ -546,6 +567,65 @@ namespace celltronix {
 
 		}
 
+
+		// propage le courant
+		public void setPower(LayerType layerType, bool power) {
+			if (!layers[(int)layerType].isPowered) {
+
+				Console.WriteLine("cell powered " + layerType + " : x = " + x + " y = " + y);
+
+
+				// cellule testée
+				layers[(int)layerType].isPowered = power;
+
+				// liaisons sur la même couche
+				foreach (Cell c in layers[(int)layerType].links) {
+					if (c != null && !c.layers[(int)layerType].isPowered) {
+						c.setPower(layerType, power);
+					}
+				}
+
+				// liaison IO / Metal
+				if (layerType == LayerType.IO
+				    && layers[(int)LayerType.METAL].isSet
+				    && !layers[(int)LayerType.METAL].isPowered) {
+					setPower(LayerType.METAL, power);
+				}
+
+				// liaison Metal / Silicon N
+				if (layerType == LayerType.METAL
+				    && layers[(int)LayerType.SILICON_N].isSet
+				    && !layers[(int)LayerType.SILICON_N].isPowered
+				    && via) {
+					setPower(LayerType.SILICON_N, power);
+				}
+
+				// liaison Silicon N / Metal
+				if (layerType == LayerType.SILICON_N
+				    && layers[(int)LayerType.METAL].isSet
+				    && !layers[(int)LayerType.METAL].isPowered
+				    && via) {
+					setPower(LayerType.METAL, power);
+				}
+
+				// liaison Metal / Silicon P
+				if (layerType == LayerType.METAL
+				    && layers[(int)LayerType.SILICON_P].isSet
+				    && !layers[(int)LayerType.SILICON_P].isPowered
+				    && via) {
+					setPower(LayerType.SILICON_P, power);
+				}
+
+				// liaison Silicon P / Metal
+				if (layerType == LayerType.SILICON_P
+				    && layers[(int)LayerType.METAL].isSet
+				    && !layers[(int)LayerType.METAL].isPowered
+				    && via) {
+					setPower(LayerType.METAL, power);
+				}
+				draw();
+			}
+		}
 
 
 		// trace un carré plein à liaisons

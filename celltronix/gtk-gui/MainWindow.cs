@@ -21,8 +21,12 @@ public partial class MainWindow
 	private global::Gtk.ToggleAction executeAction9;
 	private global::Gtk.ToggleAction executeAction10;
 	private global::Gtk.ToggleAction executeAction11;
+	private global::Gtk.ToggleAction mediaPlayAction;
+	private global::Gtk.Action mediaStopAction;
+	private global::Gtk.Action goForwardAction;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar1;
+	private global::Gtk.VPaned vpaned1;
 	private global::Gtk.HBox hbox1;
 	private global::Gtk.Toolbar toolbar1;
 	private global::Gtk.DrawingArea drawingarea1;
@@ -30,6 +34,10 @@ public partial class MainWindow
 	private global::Gtk.Toolbar toolbar2;
 	private global::Gtk.HButtonBox hbuttonbox2;
 	private global::Gtk.Toolbar toolbar3;
+	private global::Gtk.HBox hbox2;
+	private global::Gtk.Toolbar toolbar4;
+	private global::Gtk.VScale vscaleSimSpeed;
+	private global::Gtk.DrawingArea drawingarea2;
 	private global::Gtk.Statusbar statusbar1;
 	private global::Gtk.Label lblCellCount;
 	
@@ -48,15 +56,15 @@ public partial class MainWindow
 		this.executeAction4.ShortLabel = global::Mono.Unix.Catalog.GetString ("SN");
 		w1.Add (this.executeAction4, null);
 		this.executeAction5 = new global::Gtk.RadioAction ("executeAction5", global::Mono.Unix.Catalog.GetString ("Metal"), null, "gtk-execute", 0);
-		this.executeAction5.Group = this.executeAction4.Group;
+		this.executeAction5.Group = this.executeAction.Group;
 		this.executeAction5.ShortLabel = global::Mono.Unix.Catalog.GetString ("Metal");
 		w1.Add (this.executeAction5, null);
 		this.executeAction6 = new global::Gtk.RadioAction ("executeAction6", global::Mono.Unix.Catalog.GetString ("Del S"), null, "gtk-execute", 0);
-		this.executeAction6.Group = this.executeAction4.Group;
+		this.executeAction6.Group = this.executeAction.Group;
 		this.executeAction6.ShortLabel = global::Mono.Unix.Catalog.GetString ("Del S");
 		w1.Add (this.executeAction6, null);
 		this.executeAction7 = new global::Gtk.RadioAction ("executeAction7", global::Mono.Unix.Catalog.GetString ("Del M"), null, "gtk-execute", 0);
-		this.executeAction7.Group = this.executeAction4.Group;
+		this.executeAction7.Group = this.executeAction.Group;
 		this.executeAction7.ShortLabel = global::Mono.Unix.Catalog.GetString ("Del M");
 		w1.Add (this.executeAction7, null);
 		this.newAction = new global::Gtk.Action ("newAction", null, null, "gtk-new");
@@ -69,19 +77,19 @@ public partial class MainWindow
 		this.refreshAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Redraw");
 		w1.Add (this.refreshAction, null);
 		this.gotoBottomAction = new global::Gtk.RadioAction ("gotoBottomAction", global::Mono.Unix.Catalog.GetString ("Input"), null, "gtk-goto-bottom", 0);
-		this.gotoBottomAction.Group = this.executeAction4.Group;
+		this.gotoBottomAction.Group = this.executeAction.Group;
 		this.gotoBottomAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Input");
 		w1.Add (this.gotoBottomAction, null);
 		this.gotoTopAction = new global::Gtk.RadioAction ("gotoTopAction", global::Mono.Unix.Catalog.GetString ("Output"), null, "gtk-goto-top", 0);
-		this.gotoTopAction.Group = this.executeAction4.Group;
+		this.gotoTopAction.Group = this.executeAction.Group;
 		this.gotoTopAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Output");
 		w1.Add (this.gotoTopAction, null);
 		this.executeAction8 = new global::Gtk.RadioAction ("executeAction8", global::Mono.Unix.Catalog.GetString ("Via"), null, "gtk-execute", 0);
-		this.executeAction8.Group = this.executeAction4.Group;
+		this.executeAction8.Group = this.gotoTopAction.Group;
 		this.executeAction8.ShortLabel = global::Mono.Unix.Catalog.GetString ("Via");
 		w1.Add (this.executeAction8, null);
 		this.findAction = new global::Gtk.RadioAction ("findAction", global::Mono.Unix.Catalog.GetString ("LinkChk"), null, "gtk-find", 0);
-		this.findAction.Group = this.executeAction4.Group;
+		this.findAction.Group = this.gotoTopAction.Group;
 		this.findAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("LinkChk");
 		w1.Add (this.findAction, null);
 		this.FileAction = new global::Gtk.Action ("FileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
@@ -96,6 +104,12 @@ public partial class MainWindow
 		this.executeAction11 = new global::Gtk.ToggleAction ("executeAction11", null, null, "gtk-execute");
 		this.executeAction11.Active = true;
 		w1.Add (this.executeAction11, null);
+		this.mediaPlayAction = new global::Gtk.ToggleAction ("mediaPlayAction", null, null, "gtk-media-play");
+		w1.Add (this.mediaPlayAction, null);
+		this.mediaStopAction = new global::Gtk.Action ("mediaStopAction", null, null, "gtk-media-stop");
+		w1.Add (this.mediaStopAction, null);
+		this.goForwardAction = new global::Gtk.Action ("goForwardAction", null, null, "gtk-go-forward");
+		w1.Add (this.goForwardAction, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Events = ((global::Gdk.EventMask)(256));
@@ -116,6 +130,11 @@ public partial class MainWindow
 		w2.Expand = false;
 		w2.Fill = false;
 		// Container child vbox1.Gtk.Box+BoxChild
+		this.vpaned1 = new global::Gtk.VPaned ();
+		this.vpaned1.CanFocus = true;
+		this.vpaned1.Name = "vpaned1";
+		this.vpaned1.Position = 352;
+		// Container child vpaned1.Gtk.Paned+PanedChild
 		this.hbox1 = new global::Gtk.HBox ();
 		this.hbox1.Name = "hbox1";
 		this.hbox1.Spacing = 6;
@@ -175,9 +194,52 @@ public partial class MainWindow
 		w8.Position = 2;
 		w8.Expand = false;
 		w8.Fill = false;
-		this.vbox1.Add (this.hbox1);
-		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox1]));
-		w9.Position = 1;
+		this.vpaned1.Add (this.hbox1);
+		global::Gtk.Paned.PanedChild w9 = ((global::Gtk.Paned.PanedChild)(this.vpaned1 [this.hbox1]));
+		w9.Resize = false;
+		// Container child vpaned1.Gtk.Paned+PanedChild
+		this.hbox2 = new global::Gtk.HBox ();
+		this.hbox2.Name = "hbox2";
+		this.hbox2.Spacing = 6;
+		// Container child hbox2.Gtk.Box+BoxChild
+		this.UIManager.AddUiFromString ("<ui><toolbar name='toolbar4'><toolitem name='mediaPlayAction' action='mediaPlayAction'/><toolitem name='mediaStopAction' action='mediaStopAction'/><toolitem name='goForwardAction' action='goForwardAction'/></toolbar></ui>");
+		this.toolbar4 = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/toolbar4")));
+		this.toolbar4.Name = "toolbar4";
+		this.toolbar4.Orientation = ((global::Gtk.Orientation)(1));
+		this.toolbar4.ShowArrow = false;
+		this.toolbar4.ToolbarStyle = ((global::Gtk.ToolbarStyle)(0));
+		this.hbox2.Add (this.toolbar4);
+		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.toolbar4]));
+		w10.Position = 0;
+		w10.Expand = false;
+		w10.Fill = false;
+		// Container child hbox2.Gtk.Box+BoxChild
+		this.vscaleSimSpeed = new global::Gtk.VScale (null);
+		this.vscaleSimSpeed.TooltipMarkup = "simulation speed";
+		this.vscaleSimSpeed.CanFocus = true;
+		this.vscaleSimSpeed.Name = "vscaleSimSpeed";
+		this.vscaleSimSpeed.Adjustment.Upper = 100;
+		this.vscaleSimSpeed.Adjustment.PageIncrement = 10;
+		this.vscaleSimSpeed.Adjustment.StepIncrement = 1;
+		this.vscaleSimSpeed.Adjustment.Value = 10;
+		this.vscaleSimSpeed.DrawValue = false;
+		this.vscaleSimSpeed.Digits = 0;
+		this.vscaleSimSpeed.ValuePos = ((global::Gtk.PositionType)(2));
+		this.hbox2.Add (this.vscaleSimSpeed);
+		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.vscaleSimSpeed]));
+		w11.Position = 1;
+		w11.Expand = false;
+		w11.Fill = false;
+		// Container child hbox2.Gtk.Box+BoxChild
+		this.drawingarea2 = new global::Gtk.DrawingArea ();
+		this.drawingarea2.Name = "drawingarea2";
+		this.hbox2.Add (this.drawingarea2);
+		global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.drawingarea2]));
+		w12.Position = 2;
+		this.vpaned1.Add (this.hbox2);
+		this.vbox1.Add (this.vpaned1);
+		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.vpaned1]));
+		w14.Position = 1;
 		// Container child vbox1.Gtk.Box+BoxChild
 		this.statusbar1 = new global::Gtk.Statusbar ();
 		this.statusbar1.Name = "statusbar1";
@@ -186,21 +248,21 @@ public partial class MainWindow
 		this.lblCellCount = new global::Gtk.Label ();
 		this.lblCellCount.Name = "lblCellCount";
 		this.statusbar1.Add (this.lblCellCount);
-		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.lblCellCount]));
-		w10.Position = 1;
-		w10.Expand = false;
-		w10.Fill = false;
+		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.statusbar1 [this.lblCellCount]));
+		w15.Position = 1;
+		w15.Expand = false;
+		w15.Fill = false;
 		this.vbox1.Add (this.statusbar1);
-		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.statusbar1]));
-		w11.Position = 2;
-		w11.Expand = false;
-		w11.Fill = false;
+		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.statusbar1]));
+		w16.Position = 2;
+		w16.Expand = false;
+		w16.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
 		this.DefaultWidth = 962;
-		this.DefaultHeight = 600;
+		this.DefaultHeight = 655;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.SizeAllocated += new global::Gtk.SizeAllocatedHandler (this.onSize);
@@ -217,6 +279,7 @@ public partial class MainWindow
 		this.executeAction9.Activated += new global::System.EventHandler (this.showHideM);
 		this.executeAction10.Activated += new global::System.EventHandler (this.showHideS);
 		this.executeAction11.Activated += new global::System.EventHandler (this.showHideM);
+		this.goForwardAction.Activated += new global::System.EventHandler (this.OnSimStepActionActivated);
 		this.drawingarea1.ExposeEvent += new global::Gtk.ExposeEventHandler (this.onDAExposed);
 		this.drawingarea1.ButtonPressEvent += new global::Gtk.ButtonPressEventHandler (this.onDAButtonPress);
 		this.drawingarea1.ButtonReleaseEvent += new global::Gtk.ButtonReleaseEventHandler (this.onDAButtonRelease);

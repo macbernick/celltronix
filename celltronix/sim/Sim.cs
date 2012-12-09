@@ -3,11 +3,11 @@ using System;
 
 
 namespace celltronix {
-	public class sim {
+	public class Sim {
 
 		private Circuit circuit;
 
-		public sim(Circuit circuit) {
+		public Sim(Circuit circuit) {
 			this.circuit = circuit;
 		}
 
@@ -17,7 +17,11 @@ namespace celltronix {
 		}
 
 
-		private void tick() {
+		public void tick() {
+
+			foreach (InOut io in circuit.ios) {
+				io.tick();
+			}
 
 		}
 

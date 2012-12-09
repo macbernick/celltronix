@@ -25,6 +25,7 @@ namespace celltronix {
 
 			this.color.Add("gate_NPN",			new Color(1.0d, 0.7d, 0.0d));
 			this.color.Add("gate_PNP",			new Color(1.0d, 0.7d, 0.0d));
+			this.color.Add("powered",			new Color(0d, 0.5d, 1d, 0.4d));
 		}
 
 		public Color find(string c) {

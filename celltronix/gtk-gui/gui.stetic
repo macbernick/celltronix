@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/celltronix.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="962 600">
+  <widget class="Gtk.Window" id="MainWindow" design-size="962 655">
     <action-group name="Default">
       <action id="executeAction">
         <property name="Type">Radio</property>
@@ -160,6 +160,24 @@
         <property name="Active">True</property>
         <signal name="Activated" handler="showHideM" />
       </action>
+      <action id="mediaPlayAction">
+        <property name="Type">Toggle</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-media-play</property>
+        <property name="DrawAsRadio">False</property>
+        <property name="Active">False</property>
+      </action>
+      <action id="mediaStopAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-media-stop</property>
+      </action>
+      <action id="goForwardAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-go-forward</property>
+        <signal name="Activated" handler="OnSimStepActionActivated" />
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="Events">ButtonPressMask</property>
@@ -186,90 +204,103 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.HBox" id="hbox1">
+          <widget class="Gtk.VPaned" id="vpaned1">
             <property name="MemberName" />
-            <property name="Spacing">6</property>
+            <property name="CanFocus">True</property>
+            <property name="Position">352</property>
             <child>
-              <widget class="Gtk.Toolbar" id="toolbar1">
-                <property name="MemberName" />
-                <property name="Orientation">Vertical</property>
-                <property name="ShowArrow">False</property>
-                <node name="toolbar1" type="Toolbar">
-                  <node type="Toolitem" action="newAction" />
-                  <node type="Toolitem" action="openAction" />
-                  <node type="Toolitem" action="saveAction" />
-                  <node type="Toolitem" action="refreshAction" />
-                </node>
-              </widget>
-              <packing>
-                <property name="Position">0</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.DrawingArea" id="drawingarea1">
-                <property name="MemberName" />
-                <property name="Events">ExposureMask, PointerMotionMask, ButtonPressMask, ButtonReleaseMask</property>
-                <signal name="ExposeEvent" handler="onDAExposed" />
-                <signal name="ButtonPressEvent" handler="onDAButtonPress" />
-                <signal name="ButtonReleaseEvent" handler="onDAButtonRelease" />
-                <signal name="MotionNotifyEvent" handler="onDAMotionNotify" />
-              </widget>
-              <packing>
-                <property name="Position">1</property>
-                <property name="AutoSize">True</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.VBox" id="vbox2">
+              <widget class="Gtk.HBox" id="hbox1">
                 <property name="MemberName" />
                 <property name="Spacing">6</property>
                 <child>
-                  <widget class="Gtk.Toolbar" id="toolbar2">
+                  <widget class="Gtk.Toolbar" id="toolbar1">
                     <property name="MemberName" />
                     <property name="Orientation">Vertical</property>
                     <property name="ShowArrow">False</property>
-                    <node name="toolbar2" type="Toolbar">
-                      <node type="Toolitem" action="executeAction4" />
-                      <node type="Toolitem" action="executeAction" />
-                      <node type="Toolitem" action="executeAction5" />
-                      <node type="Toolitem" action="executeAction8" />
-                      <node type="Toolitem" action="executeAction6" />
-                      <node type="Toolitem" action="executeAction7" />
-                      <node type="Toolitem" action="gotoBottomAction" />
-                      <node type="Toolitem" action="gotoTopAction" />
-                      <node type="Toolitem" action="findAction" />
+                    <node name="toolbar1" type="Toolbar">
+                      <node type="Toolitem" action="newAction" />
+                      <node type="Toolitem" action="openAction" />
+                      <node type="Toolitem" action="saveAction" />
+                      <node type="Toolitem" action="refreshAction" />
                     </node>
                   </widget>
                   <packing>
                     <property name="Position">0</property>
-                    <property name="AutoSize">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="Gtk.HButtonBox" id="hbuttonbox2">
-                    <property name="MemberName" />
-                    <property name="Size">0</property>
-                  </widget>
-                  <packing>
-                    <property name="Position">1</property>
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Toolbar" id="toolbar3">
+                  <widget class="Gtk.DrawingArea" id="drawingarea1">
                     <property name="MemberName" />
-                    <property name="ShowArrow">False</property>
-                    <property name="ButtonStyle">Icons</property>
-                    <property name="IconSize">SmallToolbar</property>
-                    <node name="toolbar3" type="Toolbar">
-                      <node type="Toolitem" action="executeAction9" />
-                      <node type="Toolitem" action="executeAction10" />
-                    </node>
+                    <property name="Events">ExposureMask, PointerMotionMask, ButtonPressMask, ButtonReleaseMask</property>
+                    <signal name="ExposeEvent" handler="onDAExposed" />
+                    <signal name="ButtonPressEvent" handler="onDAButtonPress" />
+                    <signal name="ButtonReleaseEvent" handler="onDAButtonRelease" />
+                    <signal name="MotionNotifyEvent" handler="onDAMotionNotify" />
+                  </widget>
+                  <packing>
+                    <property name="Position">1</property>
+                    <property name="AutoSize">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.VBox" id="vbox2">
+                    <property name="MemberName" />
+                    <property name="Spacing">6</property>
+                    <child>
+                      <widget class="Gtk.Toolbar" id="toolbar2">
+                        <property name="MemberName" />
+                        <property name="Orientation">Vertical</property>
+                        <property name="ShowArrow">False</property>
+                        <node name="toolbar2" type="Toolbar">
+                          <node type="Toolitem" action="executeAction4" />
+                          <node type="Toolitem" action="executeAction" />
+                          <node type="Toolitem" action="executeAction5" />
+                          <node type="Toolitem" action="executeAction8" />
+                          <node type="Toolitem" action="executeAction6" />
+                          <node type="Toolitem" action="executeAction7" />
+                          <node type="Toolitem" action="gotoBottomAction" />
+                          <node type="Toolitem" action="gotoTopAction" />
+                          <node type="Toolitem" action="findAction" />
+                        </node>
+                      </widget>
+                      <packing>
+                        <property name="Position">0</property>
+                        <property name="AutoSize">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.HButtonBox" id="hbuttonbox2">
+                        <property name="MemberName" />
+                        <property name="Size">0</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Toolbar" id="toolbar3">
+                        <property name="MemberName" />
+                        <property name="ShowArrow">False</property>
+                        <property name="ButtonStyle">Icons</property>
+                        <property name="IconSize">SmallToolbar</property>
+                        <node name="toolbar3" type="Toolbar">
+                          <node type="Toolitem" action="executeAction9" />
+                          <node type="Toolitem" action="executeAction10" />
+                        </node>
+                      </widget>
+                      <packing>
+                        <property name="Position">2</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
                   </widget>
                   <packing>
                     <property name="Position">2</property>
@@ -280,11 +311,62 @@
                 </child>
               </widget>
               <packing>
-                <property name="Position">2</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
-                <property name="Fill">False</property>
+                <property name="Resize">False</property>
               </packing>
+            </child>
+            <child>
+              <widget class="Gtk.HBox" id="hbox2">
+                <property name="MemberName" />
+                <property name="Spacing">6</property>
+                <child>
+                  <widget class="Gtk.Toolbar" id="toolbar4">
+                    <property name="MemberName" />
+                    <property name="Orientation">Vertical</property>
+                    <property name="ShowArrow">False</property>
+                    <property name="ButtonStyle">Icons</property>
+                    <node name="__gtksharp_72_Stetic_Editor_ActionToolbar" type="Toolbar">
+                      <node type="Toolitem" action="mediaPlayAction" />
+                      <node type="Toolitem" action="mediaStopAction" />
+                      <node type="Toolitem" action="goForwardAction" />
+                    </node>
+                  </widget>
+                  <packing>
+                    <property name="Position">0</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.VScale" id="vscaleSimSpeed">
+                    <property name="MemberName" />
+                    <property name="Tooltip" translatable="yes">simulation speed</property>
+                    <property name="CanFocus">True</property>
+                    <property name="Upper">100</property>
+                    <property name="PageIncrement">10</property>
+                    <property name="StepIncrement">1</property>
+                    <property name="Value">10</property>
+                    <property name="DrawValue">False</property>
+                    <property name="Digits">0</property>
+                    <property name="ValuePos">Top</property>
+                  </widget>
+                  <packing>
+                    <property name="Position">1</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.DrawingArea" id="drawingarea2">
+                    <property name="MemberName" />
+                  </widget>
+                  <packing>
+                    <property name="Position">2</property>
+                    <property name="AutoSize">True</property>
+                  </packing>
+                </child>
+              </widget>
             </child>
           </widget>
           <packing>
