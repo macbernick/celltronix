@@ -171,6 +171,7 @@
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
         <property name="StockId">gtk-media-stop</property>
+        <signal name="Activated" handler="OnStopAction" />
       </action>
       <action id="goForwardAction">
         <property name="Type">Action</property>

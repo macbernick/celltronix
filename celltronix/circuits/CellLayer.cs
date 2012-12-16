@@ -21,13 +21,15 @@ namespace celltronix {
 		}
 
 		public bool isSet;
+		public bool groupedIn;
 		public Cell[] links;
 		public Cell.LayerType layerType;
 		public IOType ioType;
-
+		public Cell parentCell;
 		public bool isPowered;
 
-		public CellLayer(Cell.LayerType layerType) {
+		public CellLayer(Cell.LayerType layerType, Cell parentCell) {
+			this.parentCell = parentCell;
 			links = new Cell[Enum.GetValues(typeof(Cardinals)).Length];
 			this.layerType = layerType;
 		}

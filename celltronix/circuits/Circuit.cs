@@ -17,7 +17,7 @@ namespace celltronix {
 
 		public DrawingArea drawingAera;	// zone de tracage
 		private Vector2D drawingAeraSize;	// taille de la zone
-		public Colors color;				// dictionnaire de couleurs
+		public Colors color;				// couleurs
 
 		public double cellNormalWidth = 20;// taille d'une cellule à zoom = 1
 
@@ -249,6 +249,15 @@ namespace celltronix {
 			draw();
 		}
 
+		
+		// trouve une cellule d'après ses coordonées
+		public Cell findCellByCoords(int x, int y) {
+			foreach (Cell c in cells) {
+				if (c.x == x && c.y == y)
+					return c;
+			}
+			return null;
+		}
 
 		// recupère la taille de la zone de tracage
 		private Vector2D aeraSize() {
@@ -301,14 +310,6 @@ namespace celltronix {
 
 
 
-		// trouve une cellule d'après ses coordonées
-		private Cell findCellByCoords(int x, int y) {
-			foreach (Cell c in cells) {
-				if (c.x == x && c.y == y)
-					return c;
-			}
-			return null;
-		}
 
 
 		// cree une nouvelle cellule

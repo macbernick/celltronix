@@ -1,18 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="celltronix/circuits/Cell.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="celltronix/sim/Sim.cs">
     <Files>
-      <File FileName="celltronix/MainWindow.cs" Line="138" Column="12" />
-      <File FileName="celltronix/circuits/Cell.cs" Line="626" Column="5" />
-      <File FileName="celltronix/circuits/CellLayer.cs" Line="1" Column="1" />
-      <File FileName="celltronix/circuits/Circuit.cs" Line="66" Column="4" />
-      <File FileName="celltronix/circuits/InOut.cs" Line="15" Column="19" />
-      <File FileName="celltronix/sim/Sim.cs" Line="20" Column="9" />
+      <File FileName="celltronix/circuits/Cell.cs" Line="327" Column="3" />
+      <File FileName="celltronix/circuits/CellLayer.cs" Line="24" Column="18" />
+      <File FileName="celltronix/circuits/Circuit.cs" Line="102" Column="23" />
+      <File FileName="celltronix/circuits/InOut.cs" Line="26" Column="50" />
       <File FileName="celltronix/drawings/Colors.cs" Line="30" Column="3" />
+      <File FileName="celltronix/circuits/CellLayerGroup.cs" Line="17" Column="1" />
+      <File FileName="celltronix/sim/Sim.cs" Line="151" Column="66" />
+      <File FileName="celltronix/MainWindow.cs" Line="178" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/home/vince/dev/celltronix/celltronix/sim/Sim.cs" line="95" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -9,21 +9,21 @@ namespace celltronix {
 		private bool[] sequence;
 		public string name;
 		public List<Cell> iocells;
+		public CellLayerGroup layerGroup;
 
 		private int currentStateId;
 
-		public InOut() {
 
+		public InOut() {
 			sequence = new bool[] { true, false };
 			currentStateId = 0;
-			name = "+VCC";
-
+			name = "VCC";
 		}
 
 
 		public void tick() {
 
-			iocells[0].setPower(Cell.LayerType.IO, sequence[currentStateId]);
+			layerGroup.setPower(sequence[currentStateId]);
 
 			currentStateId ++;
 			if (currentStateId >= sequence.Length) currentStateId = 0;

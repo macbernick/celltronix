@@ -13,10 +13,10 @@ namespace celltronix {
 		public int x, y;					// coordonnées grille de la cellule
 
 		// marges pour tracage cellules
-		double mgN = 3;
-		double mgE = 2;
-		double mgS = 2;
-		double mgW = 3;
+		double mgN = 4;
+		double mgE = 3;
+		double mgS = 3;
+		double mgW = 4;
 
 		// type de couches contenues dans la cellule
 		public enum LayerType {
@@ -32,7 +32,7 @@ namespace celltronix {
 		private Circuit circuit;
 		public CellLayer[] layers;
 		public bool via;
-		private InOut io;
+		public CellLayerGroup layerGroup;
 
 
 
@@ -44,7 +44,7 @@ namespace celltronix {
 
 			layers = new CellLayer[Enum.GetValues(typeof(LayerType)).Length];
 			for (int clid = 0; clid < layers.Length; clid++) {
-				layers[clid] = new CellLayer((Cell.LayerType)Enum.GetValues(typeof(Cell.LayerType)).GetValue(clid));
+				layers[clid] = new CellLayer((Cell.LayerType)Enum.GetValues(typeof(Cell.LayerType)).GetValue(clid), this);
 			}
 
 		}
@@ -70,36 +70,36 @@ namespace celltronix {
 
 
 
-		public bool link(Cell c, LayerType layerType) {
+		public bool link(Cell originCell, LayerType layerType) {
 
-			if (layers[(int)layerType].isSet && c.layers[(int)layerType].isSet) {
+			if (layers[(int)layerType].isSet && originCell.layers[(int)layerType].isSet) {
 
 				// lien Nord
-				if (c.x == x && c.y - y == -1) {
-					layers[(int)layerType].links[(int)CellLayer.Cardinals.N] = c;
-					c.layers[(int)layerType].links[(int)CellLayer.Cardinals.S] = this;
-					c.draw();
+				if (originCell.x == x && originCell.y - y == -1) {
+					layers[(int)layerType].links[(int)CellLayer.Cardinals.N] = originCell;
+					originCell.layers[(int)layerType].links[(int)CellLayer.Cardinals.S] = this;
+					originCell.draw();
 					return true;
 
 					// lien Sud
-				} else if (c.x == x && c.y - y == 1) {
-					layers[(int)layerType].links[(int)CellLayer.Cardinals.S] = c;
-					c.layers[(int)layerType].links[(int)CellLayer.Cardinals.N] = this;
-					c.draw();
+				} else if (originCell.x == x && originCell.y - y == 1) {
+					layers[(int)layerType].links[(int)CellLayer.Cardinals.S] = originCell;
+					originCell.layers[(int)layerType].links[(int)CellLayer.Cardinals.N] = this;
+					originCell.draw();
 					return true;
 
 					// lien Ouest
-				} else if (c.y == y && c.x - x == -1) {
-					layers[(int)layerType].links[(int)CellLayer.Cardinals.W] = c;
-					c.layers[(int)layerType].links[(int)CellLayer.Cardinals.E] = this;
-					c.draw();
+				} else if (originCell.y == y && originCell.x - x == -1) {
+					layers[(int)layerType].links[(int)CellLayer.Cardinals.W] = originCell;
+					originCell.layers[(int)layerType].links[(int)CellLayer.Cardinals.E] = this;
+					originCell.draw();
 					return true;
 
 					// lien Est
-				} else if (c.y == y && c.x - x == 1) {
-					layers[(int)layerType].links[(int)CellLayer.Cardinals.E] = c;
-					c.layers[(int)layerType].links[(int)CellLayer.Cardinals.W] = this;
-					c.draw();
+				} else if (originCell.y == y && originCell.x - x == 1) {
+					layers[(int)layerType].links[(int)CellLayer.Cardinals.E] = originCell;
+					originCell.layers[(int)layerType].links[(int)CellLayer.Cardinals.W] = this;
+					originCell.draw();
 					return true;
 				}
 			}
@@ -107,133 +107,219 @@ namespace celltronix {
 			// creation portes PNP NPN
 			switch (layerType) {
 
-			// PNP
+				// PNP
 				case LayerType.SILICON_N:
 					if (layers[(int)LayerType.SILICON_P].isSet) {
 
 						// nord
-						if (c.x == x && c.y - y == -1) { 
+						if (originCell.x == x && originCell.y - y == -1) { 
 							if (layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.E] != null &&
 								layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.W] != null &&
 								layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.S] == null) {
 
 								layers[(int)LayerType.PNP].isSet = true;
-								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.N] = c;
-								c.layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.S] = this;
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.N] = originCell;
+
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.W] 
+								= circuit.findCellByCoords(x - 1, y);
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.E] 
+								= circuit.findCellByCoords(x + 1, y);
+
+								originCell.layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.S] = this;
+
+								layers[(int)LayerType.SILICON_N].isSet = false;
+								layers[(int)LayerType.SILICON_P].isSet = false;
+								
 								draw();
-								c.draw();
+								originCell.draw();
 							}
-						}
+						} else
 
 						// sud
-						if (c.x == x && c.y - y == 1) { 
+						if (originCell.x == x && originCell.y - y == 1) { 
 							if (layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.E] != null &&
 								layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.W] != null &&
 								layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.N] == null) {
 
 								layers[(int)LayerType.PNP].isSet = true;
-								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.S] = c;
-								c.layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.N] = this;
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.S] = originCell;
+
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.W] 
+								= circuit.findCellByCoords(x - 1, y);
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.E] 
+								= circuit.findCellByCoords(x + 1, y);
+
+
+								originCell.layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.N] = this;
+
+								layers[(int)LayerType.SILICON_N].isSet = false;
+								layers[(int)LayerType.SILICON_P].isSet = false;
+
 								draw();
-								c.draw();
+								originCell.draw();
 							}
-						}
+						} else
 
 						// ouest
-						if (c.y == y && c.x - x == -1) { 
+						if (originCell.y == y && originCell.x - x == -1) { 
 							if (layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.N] != null &&
 								layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.S] != null &&
 								layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.E] == null) {
 
 								layers[(int)LayerType.PNP].isSet = true;
-								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.W] = c;
-								c.layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.E] = this;
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.W] = originCell;
+
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.S] 
+								= circuit.findCellByCoords(x, y + 1);
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.N] 
+								= circuit.findCellByCoords(x, y - 1);
+
+
+								originCell.layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.E] = this;
+
+								layers[(int)LayerType.SILICON_N].isSet = false;
+								layers[(int)LayerType.SILICON_P].isSet = false;
+
 								draw();
-								c.draw();
+								originCell.draw();
 							}
-						}
+						} else
 
 						// est
-						if (c.y == y && c.x - x == 1) { 
+						if (originCell.y == y && originCell.x - x == 1) { 
 							if (layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.N] != null &&
 								layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.S] != null &&
 								layers[(int)LayerType.SILICON_P].links[(int)CellLayer.Cardinals.W] == null) {
 
 								layers[(int)LayerType.PNP].isSet = true;
-								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.E] = c;
-								c.layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.W] = this;
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.E] = originCell;
+
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.S] 
+								= circuit.findCellByCoords(x, y + 1);
+								layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.N] 
+								= circuit.findCellByCoords(x, y - 1);
+
+								originCell.layers[(int)LayerType.PNP].links[(int)CellLayer.Cardinals.W] = this;
+
+								layers[(int)LayerType.SILICON_N].isSet = false;
+								layers[(int)LayerType.SILICON_P].isSet = false;
+
 								draw();
-								c.draw();
+								originCell.draw();
 							}
 						}
 					}
 					break;
 
-			// NPN
+				// NPN
 				case LayerType.SILICON_P:
 					if (layers[(int)LayerType.SILICON_N].isSet) {
 
 						// nord
-						if (c.x == x && c.y - y == -1) { 
+						if (originCell.x == x && originCell.y - y == -1) { 
 							if (layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.E] != null &&
 								layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.W] != null &&
 								layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.S] == null) {
 
 								layers[(int)LayerType.NPN].isSet = true;
-								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.N] = c;
-								c.layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.S] = this;
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.N] = originCell;
+
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.W] 
+								= circuit.findCellByCoords(x - 1, y);
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.E] 
+								= circuit.findCellByCoords(x + 1, y);
+
+								originCell.layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.S] = this;
+
+								layers[(int)LayerType.SILICON_N].isSet = false;
+								layers[(int)LayerType.SILICON_P].isSet = false;
+
 								draw();
-								c.draw();
+								originCell.draw();
 							}
-						}
+						} else
 
 						// sud
-						if (c.x == x && c.y - y == 1) { 
+						if (originCell.x == x && originCell.y - y == 1) { 
 							if (layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.E] != null &&
 								layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.W] != null &&
 								layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.N] == null) {
 
 								layers[(int)LayerType.NPN].isSet = true;
-								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.S] = c;
-								c.layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.N] = this;
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.S] = originCell;
+
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.W] 
+								= circuit.findCellByCoords(x - 1, y);
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.E] 
+								= circuit.findCellByCoords(x + 1, y);
+
+								originCell.layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.N] = this;
+
+								layers[(int)LayerType.SILICON_N].isSet = false;
+								layers[(int)LayerType.SILICON_P].isSet = false;
+
 								draw();
-								c.draw();
+								originCell.draw();
 							}
-						}
+						} else
 
 						// ouest
-						if (c.y == y && c.x - x == -1) { 
+						if (originCell.y == y && originCell.x - x == -1) { 
 							if (layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.N] != null &&
 								layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.S] != null &&
 								layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.E] == null) {
 
 								layers[(int)LayerType.NPN].isSet = true;
-								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.W] = c;
-								c.layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.E] = this;
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.W] = originCell;
+
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.S] 
+								= circuit.findCellByCoords(x, y + 1);
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.N] 
+								= circuit.findCellByCoords(x, y - 1);
+
+								originCell.layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.E] = this;
+
+								layers[(int)LayerType.SILICON_N].isSet = false;
+								layers[(int)LayerType.SILICON_P].isSet = false;
+
 								draw();
-								c.draw();
+								originCell.draw();
 							}
-						}
+						} else
 
 						// est
-						if (c.y == y && c.x - x == 1) { 
+						if (originCell.y == y && originCell.x - x == 1) { 
 							if (layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.N] != null &&
 								layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.S] != null &&
 								layers[(int)LayerType.SILICON_N].links[(int)CellLayer.Cardinals.W] == null) {
 
 								layers[(int)LayerType.NPN].isSet = true;
-								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.E] = c;
-								c.layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.W] = this;
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.E] = originCell;
+
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.S] 
+								= circuit.findCellByCoords(x, y + 1);
+								layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.N] 
+								= circuit.findCellByCoords(x, y - 1);
+
+								originCell.layers[(int)LayerType.NPN].links[(int)CellLayer.Cardinals.W] = this;
+
+								layers[(int)LayerType.SILICON_N].isSet = false;
+								layers[(int)LayerType.SILICON_P].isSet = false;
+
 								draw();
-								c.draw();
+								originCell.draw();
 							}
 						}
 					}
 					break;
 			}
-
-
 			return false;
+		}
+
+
+
+		public void setLayerGroup(CellLayerGroup layerGroup) {
+			this.layerGroup = layerGroup;
 		}
 
 
@@ -464,7 +550,6 @@ namespace celltronix {
 			}
 
 			// couche I/O
-			// TODO : tracer les liens avec couche Metal
 			if (layers[(int)LayerType.IO].isSet) {
 				traceLinkedFullSquare(grCxt, cellWidth, color.find("metal_fill"), LayerType.IO);
 			}
@@ -555,12 +640,16 @@ namespace celltronix {
 				}
 
 				int lnkCnt = 0;
-				foreach(Cell c in l.links)
-					if (c != null) lnkCnt ++;
+				foreach (Cell c in l.links)
+					if (c != null)
+						lnkCnt ++;
 
-				Console.WriteLine("layer " + l.layerType + " : " + l.isSet + " | pwr : " + l.isPowered + " | links : " + lnkCnt);
+				Console.WriteLine("layer " + l.layerType + " : " + l.isSet 
+				                  + " \t| pwr : " + l.isPowered 
+				                  + " \t| links : " + lnkCnt
+				                  + " \t| grouped : " + l.groupedIn);
 			}
-			Console.WriteLine("::::::::::::::::::::::");
+			Console.WriteLine(" : : : : : : : : : : : : : : : : : : : : : :");
 
 			((IDisposable)grCxt.Target).Dispose();                                      
 			((IDisposable)grCxt).Dispose();
@@ -568,64 +657,7 @@ namespace celltronix {
 		}
 
 
-		// propage le courant
-		public void setPower(LayerType layerType, bool power) {
-			if (!layers[(int)layerType].isPowered) {
 
-				Console.WriteLine("cell powered " + layerType + " : x = " + x + " y = " + y);
-
-
-				// cellule testée
-				layers[(int)layerType].isPowered = power;
-
-				// liaisons sur la même couche
-				foreach (Cell c in layers[(int)layerType].links) {
-					if (c != null && !c.layers[(int)layerType].isPowered) {
-						c.setPower(layerType, power);
-					}
-				}
-
-				// liaison IO / Metal
-				if (layerType == LayerType.IO
-				    && layers[(int)LayerType.METAL].isSet
-				    && !layers[(int)LayerType.METAL].isPowered) {
-					setPower(LayerType.METAL, power);
-				}
-
-				// liaison Metal / Silicon N
-				if (layerType == LayerType.METAL
-				    && layers[(int)LayerType.SILICON_N].isSet
-				    && !layers[(int)LayerType.SILICON_N].isPowered
-				    && via) {
-					setPower(LayerType.SILICON_N, power);
-				}
-
-				// liaison Silicon N / Metal
-				if (layerType == LayerType.SILICON_N
-				    && layers[(int)LayerType.METAL].isSet
-				    && !layers[(int)LayerType.METAL].isPowered
-				    && via) {
-					setPower(LayerType.METAL, power);
-				}
-
-				// liaison Metal / Silicon P
-				if (layerType == LayerType.METAL
-				    && layers[(int)LayerType.SILICON_P].isSet
-				    && !layers[(int)LayerType.SILICON_P].isPowered
-				    && via) {
-					setPower(LayerType.SILICON_P, power);
-				}
-
-				// liaison Silicon P / Metal
-				if (layerType == LayerType.SILICON_P
-				    && layers[(int)LayerType.METAL].isSet
-				    && !layers[(int)LayerType.METAL].isPowered
-				    && via) {
-					setPower(LayerType.METAL, power);
-				}
-				draw();
-			}
-		}
 
 
 		// trace un carré plein à liaisons

@@ -248,4 +248,9 @@ public partial class MainWindow: Gtk.Window {
 	protected void OnSimStepActionActivated(object sender, EventArgs e) {
 		sim.tick();
 	}
+
+	protected void OnStopAction(object o, ChangedArgs args) {
+		sim.stop();
+	}
+
 }
